@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="Libs/react-0.13.0/build/react-with-addons.js"></script>
+    <script src="Libs/react-0.13.0/build/JSXTransformer.js"></script>
+
+    <link rel="stylesheet" href="index.css" media="screen" title="no title" charset="utf-8">
+
+
+  </head>
+  <body>
+
+    <div class="interface-preview" id="interface-preview">
+
+    </div>
+    <script type="text/javascript" src="index.js"></script>
+    <script type="text/jsx" src="Patch Library/Layer/index.js"></script>
+    <script type="text/jsx" src="Patch Library/Switch/index.js"></script>
+    <script type="text/jsx" src="Patch Library/Interaction2/index.js"></script>
+    <script type="text/jsx" src="Patch Library/PopAnimation/index.js"></script>
+    <script type="text/jsx" src="Patch Library/Transition/index.js"></script>
+
+
+      <script type="text/jsx">
+      var maps = {
+        "Layer":<Layer></Layer>,
+        "Switch":<Switch></Switch>,
+        "Interaction2":<Interaction2></Interaction2>,
+        "PopAnimation":<PopAnimation></PopAnimation>,
+        "Transition":<Transition></Transition>
+      }
+      var children = []
+      var App = React.createClass({
+        getInitialState: function() {
+          return {
+            menushow: 0,
+            children:[
+
+
+
+
+            ]
+          };
+        },
+
+        onClick:function(){
+
+          // document.getElementById("interface-library").style.d=""
+          this.setState({"menushow":!this.state.menushow});
+        },
+        libraryOnClick:function(e){
+
+
+          if(e.target.className.indexOf("interface-input")!=-1){
+            console.log(e.target.innerHTML)
+            children.push(maps[e.target.innerHTML])
+            this.setState({children:children})
+            this.setState({"menushow":!this.state.menushow});
+          }
+        },
+        render: function() {
+          var menushow = !this.state.menushow?"none":"block";
+          var items = this.state.children.map(function(result, i) {
+            return (
+              {result}
+            );
+          }.bind(this));
+          return (
+            <div>
+              <div className="interface-editor interface-window" >
+                <div className="interface-toolbar full" style={{"zIndex":100}}>
+                  <a className="notebooks-menu-btn" onClick={this.onClick} data-toggle="modal" data-target="#notebooks-menu" href="javascript:void(null);"><i className  ="fa fa-list-ul"></i></a>
+                [从点击这里开始]
+                  </div>
+                <div style={{"position":"absolute","top":"20px","height":"460px","width":"100%"}} id="interface-editor">
+                  <div style={{"position":"absolute","top":"0px","bottom":"0px","left":"0px","right":"0px"}}>
+                    {items}
+                  </div>
+                </div>
+                <svg id="pathContainer" xmlns="http://www.w3.org/2000/svg" version="1.1" style={{"position":"absolute","height":"100%","width":"100%","z-index":"-100"}}>
+
+                </svg>
+
+
+              </div>
+              <div className="interface-viewer interface-window">
+                <div className="interface-toolbar full">Viewer</div>
+                <div className="interface-viewer-phone">
+                <div className="interface-viewer-phone-screen"></div>
+                </div>
+              </div>
+              <div className="interface-library interface-window" id="interface-library" style={{"display":menushow}} onClick={this.libraryOnClick}>
+                <div className="interface-toolbar" style={{"height":"20px"}}>Library</div>
+                <div className="interface-library-list interface-input">Layer</div>
+                <div className="interface-library-list interface-input">Switch</div>
+                <div className="interface-library-list interface-input">Interaction2</div>
+                <div className="interface-library-list interface-input">PopAnimation</div>
+                <div className="interface-library-list interface-input">Transition</div>
+              </div>
+              <div className="interface-inspector interface-window" style={{"display":"none"}}>
+                <div className="interface-toolbar">Inspector</div>
+                <div className="interface-inspector-input interface-input"></div>
+                <div className="interface-inspector-input interface-input"></div>
+                <div className="interface-inspector-input interface-input"></div>
+                <div className="interface-inspector-input interface-input"></div>
+                <div className="interface-inspector-input interface-input"></div>
+              </div>
+            </div>
+          )
+        }
+      });
+      React.render(
+          <App></App>
+        ,
+        document.getElementById('interface-preview'),
+        function(){
+          main();
+        }
+      );
+      </script>
+
+  </body>
+</html>
